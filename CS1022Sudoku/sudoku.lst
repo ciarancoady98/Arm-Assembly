@@ -1,0 +1,2229 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             Sudoku, CODE, READONLY
+    2 00000000                 EXPORT           start
+    3 00000000                 IMPORT           sendchar
+    4 00000000                 PRESERVE8
+    5 00000000         
+    6 00000000         start
+    7 00000000         
+    8 00000000         ;
+    9 00000000         ;Testing for getSquare subroutine
+   10 00000000         ;
+   11 00000000         
+   12 00000000         ;test first element
+   13 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   14 00000000         ;LDR R1, =0;          Row = 0
+   15 00000000         ;LDR R2, =0;          Column = 0
+   16 00000000         ;BL getSquare;         getSquare(gridStartAddr, Row, Col
+                       umn)
+   17 00000000         
+   18 00000000         ;test random value
+   19 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   20 00000000         ;LDR R1, =4;          Row = 4
+   21 00000000         ;LDR R2, =2;          Column = 2
+   22 00000000         ;BL getSquare;         getSquare(gridStartAddr, Row, Col
+                       umn)
+   23 00000000         
+   24 00000000         ;test end of grid
+   25 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   26 00000000         ;LDR R1, =8;          Row = 8
+   27 00000000         ;LDR R2, =8;          Column = 8
+   28 00000000         ;BL getSquare;         getSquare(gridStartAddr, Row, Col
+                       umn)
+   29 00000000         
+   30 00000000         ;test last column
+   31 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   32 00000000         ;LDR R1, =0;          Row = 0
+   33 00000000         ;LDR R2, =8;          Column = 8
+   34 00000000         ;BL getSquare;         getSquare(gridStartAddr, Row, Col
+                       umn)
+   35 00000000         
+   36 00000000         ;test last row
+   37 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   38 00000000         ;LDR R1, =8;          Row = 8
+   39 00000000         ;LDR R2, =0;          Column = 0
+   40 00000000         ;BL getSquare;         getSquare(gridStartAddr, Row, Col
+                       umn)
+   41 00000000         
+   42 00000000         ;
+   43 00000000         ;Testing for setSquare subroutine
+   44 00000000         ;
+   45 00000000         
+   46 00000000         ;test first element
+   47 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   48 00000000         ;LDR R1, =0;          Row = 0
+   49 00000000         ;LDR R2, =0;          Column = 0
+   50 00000000         ;LDR R3, =9;          newSquareValue = 9
+   51 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   52 00000000         
+   53 00000000         ;test random value
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   54 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   55 00000000         ;LDR R1, =4;          Row = 4
+   56 00000000         ;LDR R2, =2;          Column = 2
+   57 00000000         ;LDR R3, =5;          newSquareValue = 5
+   58 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   59 00000000         
+   60 00000000         ;test end of grid
+   61 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   62 00000000         ;LDR R1, =8;          Row = 8
+   63 00000000         ;LDR R2, =8;          Column = 8
+   64 00000000         ;LDR R3, =0;          newSquareValue = 0
+   65 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   66 00000000         
+   67 00000000         ;test last column
+   68 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   69 00000000         ;LDR R1, =0;          Row = 0
+   70 00000000         ;LDR R2, =8;          Column = 8
+   71 00000000         ;LDR R3, =7;          newSquareValue = 7
+   72 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   73 00000000         
+   74 00000000         ;test last row
+   75 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   76 00000000         ;LDR R1, =8;          Row = 8
+   77 00000000         ;LDR R2, =0;          Column = 0
+   78 00000000         ;LDR R3, =1;          newSquareValue = 1
+   79 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   80 00000000         
+   81 00000000         ;
+   82 00000000         ; Testing for isValid subroutine
+   83 00000000         ;
+   84 00000000         ; Testing isValidRow
+   85 00000000         ;
+   86 00000000         ;test invalid result
+   87 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   88 00000000         ;LDR R1, =0;          Row = 0
+   89 00000000         ;LDR R2, =0;          Column = 0
+   90 00000000         ;LDR R3, =8;          newSquareValue = 9
+   91 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+   92 00000000         ;BL isValidRow;
+   93 00000000         
+   94 00000000         ;test valid result
+   95 00000000         ;LDR R0, =gridOne;        gridStartAddr
+   96 00000000         ;LDR R1, =4;          Row = 4
+   97 00000000         ;LDR R2, =2;          Column = 2
+   98 00000000         ;LDR R3, =5;          newSquareValue = 5
+   99 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+  100 00000000         ;BL isValidRow;
+  101 00000000         
+  102 00000000         ;test a value of zero
+  103 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  104 00000000         ;LDR R1, =8;          Row = 8
+  105 00000000         ;LDR R2, =8;          Column = 8
+  106 00000000         ;LDR R3, =0;          newSquareValue = 0
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  107 00000000         ;BL setSquare;
+  108 00000000         ;BL isValidRow;
+  109 00000000         
+  110 00000000         ; Testing isValidColumn
+  111 00000000         ;
+  112 00000000         ;test invalid result
+  113 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  114 00000000         ;LDR R1, =0;          Row = 0
+  115 00000000         ;LDR R2, =0;          Column = 0
+  116 00000000         ;LDR R3, =8;          newSquareValue = 9
+  117 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+  118 00000000         ;BL isValidColumn;
+  119 00000000         
+  120 00000000         ;test valid result
+  121 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  122 00000000         ;LDR R1, =4;          Row = 4
+  123 00000000         ;LDR R2, =2;          Column = 2
+  124 00000000         ;LDR R3, =5;          newSquareValue = 5
+  125 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+  126 00000000         ;BL isValidColumn;
+  127 00000000         
+  128 00000000         ;test a value of zero
+  129 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  130 00000000         ;LDR R1, =8;          Row = 8
+  131 00000000         ;LDR R2, =8;          Column = 8
+  132 00000000         ;LDR R3, =0;          newSquareValue = 0
+  133 00000000         ;BL setSquare;
+  134 00000000         ;BL isValidColumn;
+  135 00000000         
+  136 00000000         ;Testing identifySubGrid
+  137 00000000         ;
+  138 00000000         ;test first subgrid
+  139 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  140 00000000         ;LDR R3, =0;          testCase = 0
+  141 00000000         ;BL identifySubGrid;
+  142 00000000         
+  143 00000000         ;test second subgrid
+  144 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  145 00000000         ;LDR R3, =4;          testCase = 0
+  146 00000000         ;BL identifySubGrid;
+  147 00000000         
+  148 00000000         ;test third subgrid
+  149 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  150 00000000         ;LDR R3, =8;          testCase = 0
+  151 00000000         ;BL identifySubGrid;
+  152 00000000         
+  153 00000000         ;Testing isValidSubgrid
+  154 00000000         ;
+  155 00000000         
+  156 00000000         ;test invalid result
+  157 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  158 00000000         ;LDR R1, =0;          Row = 0
+  159 00000000         ;LDR R2, =0;          Column = 0
+  160 00000000         ;LDR R3, =8;          newSquareValue = 9
+  161 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+  162 00000000         ;BL isValidSubgrid;
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  163 00000000         
+  164 00000000         ;test valid result
+  165 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  166 00000000         ;LDR R1, =4;          Row = 4
+  167 00000000         ;LDR R2, =2;          Column = 2
+  168 00000000         ;LDR R3, =5;          newSquareValue = 5
+  169 00000000         ;BL setSquare;         getSquare(gridStartAddr, Row, Col
+                       umn, newSquareValue)
+  170 00000000         ;BL isValidSubgrid;
+  171 00000000         
+  172 00000000         ;test a value of zero
+  173 00000000         ;LDR R0, =gridOne;        gridStartAddr
+  174 00000000         ;LDR R1, =8;          Row = 8
+  175 00000000         ;LDR R2, =8;          Column = 8
+  176 00000000         ;LDR R3, =0;          newSquareValue = 0
+  177 00000000         ;BL setSquare;
+  178 00000000         ;BL isValidSubgrid;
+  179 00000000         
+  180 00000000         
+  181 00000000         ;Testing isValid subroutine
+  182 00000000         ;
+  183 00000000         ;repeated tests using different grids
+  184 00000000         
+  185 00000000         ;LDR R0, =testGrid3;        gridStartAddr
+  186 00000000         ;LDR R1, =0;          Row = 0
+  187 00000000         ;LDR R2, =0;          Column = 0
+  188 00000000         ;BL isValid;
+  189 00000000         
+  190 00000000         ;LDR R0, =testGrid1;        gridStartAddr
+  191 00000000         ;LDR R1, =4;          Row = 4
+  192 00000000         ;LDR R2, =2;          Column = 2
+  193 00000000         ;BL isValid;
+  194 00000000         
+  195 00000000         ;LDR R0, =testGrid1;        gridStartAddr
+  196 00000000         ;LDR R1, =8;          Row = 8
+  197 00000000         ;LDR R2, =8;          Column = 8
+  198 00000000         ;BL isValid;
+  199 00000000         
+  200 00000000         ;testing printBoard subroutine
+  201 00000000         ;
+  202 00000000         ;LDR R0, =board
+  203 00000000         ;BL printBoard
+  204 00000000         
+  205 00000000         ;testing storeGridToBoard subroutine
+  206 00000000         ;
+  207 00000000         ;LDR R0, =testGrid1
+  208 00000000         ;LDR R1, =board
+  209 00000000         ;BL storeGridToBoard
+  210 00000000         ;LDR R0, =board
+  211 00000000         ;BL printBoard
+  212 00000000         
+  213 00000000         ;LDR R0, =testGrid2
+  214 00000000         ;LDR R1, =board
+  215 00000000         ;BL storeGridToBoard
+  216 00000000         ;LDR R0, =board
+  217 00000000         ;BL printBoard
+  218 00000000         
+  219 00000000         ;LDR R0, =testGrid3
+  220 00000000         ;LDR R1, =board
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  221 00000000         ;BL storeGridToBoard
+  222 00000000         ;LDR R0, =board
+  223 00000000         ;BL printBoard
+  224 00000000         
+  225 00000000         ;
+  226 00000000         ; test sudoku subroutine
+  227 00000000         ;
+  228 00000000         
+  229 00000000 E59F045C        LDR              R0, =gridOne
+  230 00000004 E59F145C        LDR              R1, =board
+  231 00000008 EB0000E3        BL               storeGridToBoard
+  232 0000000C E59F0454        LDR              R0, =board
+  233 00000010 EB0000C9        BL               printBoard
+  234 00000014         
+  235 00000014 E3A01000        LDR              R1, =0
+  236 00000018 E3A02000        LDR              R2, =0
+  237 0000001C E59F0440        LDR              R0, =gridOne
+  238 00000020 EB000089        BL               sudoku
+  239 00000024 EB0000F8        BL               printMessage
+  240 00000028         
+  241 00000028 E59F0434        LDR              R0, =gridOne
+  242 0000002C E59F1434        LDR              R1, =board
+  243 00000030 EB0000D9        BL               storeGridToBoard
+  244 00000034 E59F042C        LDR              R0, =board
+  245 00000038 EB0000BF        BL               printBoard
+  246 0000003C         
+  247 0000003C EAFFFFFE 
+                       stop    B                stop
+  248 00000040         
+  249 00000040         
+  250 00000040         
+  251 00000040         ; getSquare subroutine
+  252 00000040         ; This takes the index of the desired square and returns
+                        the byte sized value in that square
+  253 00000040         ; R0 - start address of the grid
+  254 00000040         ; R1 - row
+  255 00000040         ; R2 - column
+  256 00000040         ; R3 - returns the value in the square
+  257 00000040         
+  258 00000040         getSquare
+  259 00000040 E92D4030        STMFD            SP!, {R4-R5, lr} ;         savi
+                                                            ng stuff to the sta
+                                                            ck 
+  260 00000044 E3A05009        LDR              R5, =9      ;            row_si
+                                                            ze
+  261 00000048 E0040591        MUL              R4, R1, R5  ;           row * r
+                                                            ow_size
+  262 0000004C E0844002        ADD              R4, R4, R2  ;           index =
+                                                             (row * row_size) +
+                                                             column
+  263 00000050 E7D03004        LDRB             R3, [R0, R4] ;           square
+                                                            Value = memory.byte
+                                                            [gridStartAddr + in
+                                                            dex]
+  264 00000054 E8BD8030        LDMFD            SP!, {R4-R5, PC} ;
+  265 00000058         
+  266 00000058         
+  267 00000058         
+  268 00000058         
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  269 00000058         ; setSquare subroutine
+  270 00000058         ; This takes the index of the desired square and stores 
+                       a passed byte sized value in it
+  271 00000058         ; R0 - start address of the grid
+  272 00000058         ; R1 - row
+  273 00000058         ; R2 - column
+  274 00000058         ; R3 - element to be stored in square
+  275 00000058         
+  276 00000058         setSquare
+  277 00000058 E92D4030        STMFD            SP!, {R4-R5, lr} ;         savi
+                                                            ng stuff to the sta
+                                                            ck 
+  278 0000005C E3A05009        LDR              R5, =9      ;            row_si
+                                                            ze
+  279 00000060 E0040591        MUL              R4, R1, R5  ;           row * r
+                                                            ow_size
+  280 00000064 E0844002        ADD              R4, R4, R2  ;           index =
+                                                             (row * row_size) +
+                                                             column
+  281 00000068 E7C03004        STRB             R3, [R0, R4] ;           memory
+                                                            .byte[gridStartAddr
+                                                             + index] = squareV
+                                                            alue
+  282 0000006C E8BD8030        LDMFD            SP!, {R4-R5, PC} ;
+  283 00000070         
+  284 00000070         
+  285 00000070         
+  286 00000070         ; isValid subroutine
+  287 00000070         ; takes a row and column of a square and determines if t
+                       hat row, column and subgrid is valid
+  288 00000070         ; R0 - start address of the grid
+  289 00000070         ; R1 - row
+  290 00000070         ; R2 - column
+  291 00000070         
+  292 00000070         isValid
+  293 00000070 E92D4030        STMFD            SP!, {R4-R5, lr} ; saving stuff
+                                                             to the stack
+  294 00000074 E1A04001        MOV              R4, R1
+  295 00000078 E1A05002        MOV              R5, R2
+  296 0000007C EB00000E        BL               isValidRow  ;     if(isValidRow
+                                                            (row, column) && is
+                                                            ValidColumn(row, co
+                                                            lumn) && isValidSub
+                                                            grid(row, column))
+  297 00000080 E3530000        CMP              R3, #0      ;      {
+  298 00000084 0A00000B        BEQ              notValid    ;      return true;
+                                                            
+  299 00000088 E1A01004        MOV              R1, R4
+  300 0000008C E1A02005        MOV              R2, R5
+  301 00000090 EB000021        BL               isValidColumn ;    }
+  302 00000094 E3530000        CMP              R3, #0      ;      else
+  303 00000098 0A000006        BEQ              notValid    ;     {
+  304 0000009C E1A01004        MOV              R1, R4
+  305 000000A0 E1A02005        MOV              R2, R5
+  306 000000A4 EB000034        BL               isValidSubgrid 
+                                                            ;     return false;
+                                                            
+  307 000000A8 E3530000        CMP              R3, #0      ;      }
+  308 000000AC 0A000001        BEQ              notValid
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  309 000000B0 E3A03001        LDR              R3, =1
+  310 000000B4 E8BD8030        LDMFD            SP!, {R4-R5, pc}
+  311 000000B8         notValid
+  312 000000B8 E8BD8030        LDMFD            SP!, {R4-R5, pc}
+  313 000000BC         
+  314 000000BC         
+  315 000000BC         
+  316 000000BC         ; isValidRow subroutine
+  317 000000BC         ; takes a square (row and column) and determines if the 
+                       row is valid
+  318 000000BC         ; R0 - start address of the grid
+  319 000000BC         ; R1 - row
+  320 000000BC         ; R2 - column
+  321 000000BC         
+  322 000000BC         isValidRow
+  323 000000BC E92D43F0        STMFD            SP!, {R4-R9, lr} ;      saving 
+                                                            stuff to the stack
+  324 000000C0 EBFFFFDE        BL               getSquare   ;        square = g
+                                                            rid[row][column], (
+                                                            returns square valu
+                                                            e to R3)
+  325 000000C4 E1A04001        MOV              R4, R1      ;         R4 = row
+  326 000000C8 E1A05002        MOV              R5, R2      ;         R5 = colu
+                                                            mn
+  327 000000CC E1A06003        MOV              R6, R3      ;         R6 = squa
+                                                            re
+  328 000000D0 E3A07009        LDR              R7, =9      ;         row lengt
+                                                            h = 9
+  329 000000D4 E3A09001        LDR              R9, =1      ;         isValidRo
+                                                            w = 1;
+  330 000000D8         ifValidRow1
+  331 000000D8 E3560000        CMP              R6, #0      ;         if(square
+                                                             != 0)
+  332 000000DC 0A00000C        BEQ              endifValidRow1 ;       {
+  333 000000E0 E3A08000        LDR              R8, =0      ;           for(ind
+                                                            ex = 0; index < row
+                                                            _length); index++)
+  334 000000E4         forValidRow
+  335 000000E4 E1580007        CMP              R8, R7      ;           {
+  336 000000E8 AA000009        BGE              endforValidRow
+  337 000000EC         ifValidRow2
+  338 000000EC E1580005        CMP              R8, R5      ;          if(index
+                                                             != column)
+  339 000000F0 0A000005        BEQ              endifValidRow2 ;        {
+  340 000000F4 E1A02008        MOV              R2, R8      ; 
+  341 000000F8 EBFFFFD0        BL               getSquare   ;            square
+                                                            1 = grid[row][index
+                                                            ]
+  342 000000FC         ifValidRow3
+  343 000000FC E1560003        CMP              R6, R3      ;            if(squ
+                                                            are == square1)
+  344 00000100 1A000001        BNE              endifValidRow3 ;          {
+  345 00000104 E3A09000        LDR              R9, =0      ;           isValid
+                                                            Row = false
+  346 00000108 EA000001        B                endifValidRow1 ;          }
+  347 0000010C         endifValidRow3                       ;           }
+  348 0000010C         endifValidRow2                       ;            
+  349 0000010C E2888001        ADD              R8, R8, #1  ;         index++
+  350 00000110 EAFFFFF3        B                forValidRow ;          }
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  351 00000114         endforValidRow                       ;         }
+  352 00000114         endifValidRow1
+  353 00000114 E1A03009        MOV              R3, R9      ;         return bo
+                                                            ol isValidRow
+  354 00000118 E8BD83F0        LDMFD            SP!, {R4-R9, PC} ;      restore
+                                                             from the stack
+  355 0000011C         
+  356 0000011C         
+  357 0000011C         
+  358 0000011C         ; isValidColumn subroutine
+  359 0000011C         ; takes a square (row and column) and determines if the 
+                       column is valid
+  360 0000011C         ; R0 - start address of the grid
+  361 0000011C         ; R1 - row
+  362 0000011C         ; R2 - column
+  363 0000011C         
+  364 0000011C         isValidColumn
+  365 0000011C         
+  366 0000011C E92D43F0        STMFD            SP!, {R4-R9, lr} ;      saving 
+                                                            stuff to the stack
+  367 00000120 EBFFFFC6        BL               getSquare   ;        square = g
+                                                            rid[row][column], (
+                                                            returns square valu
+                                                            e to R3)
+  368 00000124 E1A04001        MOV              R4, R1      ;         R4 = row
+  369 00000128 E1A05002        MOV              R5, R2      ;         R5 = colu
+                                                            mn
+  370 0000012C E1A06003        MOV              R6, R3      ;         R6 = squa
+                                                            re
+  371 00000130 E3A07009        LDR              R7, =9      ;         column le
+                                                            ngth = 9
+  372 00000134 E3A09001        LDR              R9, =1      ;         isValidCo
+                                                            lumn = 1;
+  373 00000138         ifValidColumn1
+  374 00000138 E3560000        CMP              R6, #0      ;         if(square
+                                                             != 0)
+  375 0000013C 0A00000C        BEQ              endifValidColumn1 ;      {
+  376 00000140 E3A08000        LDR              R8, =0      ;           for(ind
+                                                            ex = 0; index < col
+                                                            umn_length); index+
+                                                            +)
+  377 00000144         forValidColumn
+  378 00000144 E1580007        CMP              R8, R7      ;           {
+  379 00000148 AA000009        BGE              endforValidColumn
+  380 0000014C         ifValidColumn2
+  381 0000014C E1580004        CMP              R8, R4      ;           if(inde
+                                                            x != row)
+  382 00000150 0A000005        BEQ              endifValidColumn2 ;       {
+  383 00000154 E1A01008        MOV              R1, R8      ; 
+  384 00000158 EBFFFFB8        BL               getSquare   ;            square
+                                                            1 = grid[index][col
+                                                            umn]
+  385 0000015C         ifValidColumn3
+  386 0000015C E1560003        CMP              R6, R3      ;            if(squ
+                                                            are == square1)
+  387 00000160 1A000001        BNE              endifValidColumn3 ;         {
+  388 00000164 E3A09000        LDR              R9, =0      ;           isValid
+                                                            Column = false
+  389 00000168 EA000001        B                endifValidColumn1 ;         }
+
+
+
+ARM Macro Assembler    Page 9 
+
+
+  390 0000016C         endifValidColumn3                    ;         }
+  391 0000016C         endifValidColumn2                    ;           
+  392 0000016C E2888001        ADD              R8, R8, #1  ;         index++
+  393 00000170 EAFFFFF3        B                forValidColumn ;         }
+  394 00000174         endforValidColumn                    ;        }
+  395 00000174         endifValidColumn1
+  396 00000174 E1A03009        MOV              R3, R9      ;         return bo
+                                                            ol isValidColumn
+  397 00000178 E8BD83F0        LDMFD            SP!, {R4-R9, PC} ;      restore
+                                                             from the stack
+  398 0000017C         
+  399 0000017C         
+  400 0000017C         ; isValidSubGrid subroutine
+  401 0000017C         ; takes a square (row and column) and determines if its 
+                       subgrid is valid
+  402 0000017C         ; note: i have named each smaller 3*3 grid within the su
+                       doku board a subgrid, each subgrid then has a start corn
+                       er denoted by subGridXStart(column) and subGridYStart(ro
+                       w)
+  403 0000017C         ; R0 - start address of the grid
+  404 0000017C         ; R1 - row
+  405 0000017C         ; R2 - column
+  406 0000017C         isValidSubgrid
+  407 0000017C         
+  408 0000017C E92D4FF0        STMFD            SP!, {R4-R11, lr}
+  409 00000180 E1A03001        MOV              R3, R1      ;         get subGr
+                                                            idYStart
+  410 00000184 EB000025        BL               identifySubGrid
+  411 00000188 E1A04003        MOV              R4, R3      ;         R4 = subG
+                                                            ridYStart
+  412 0000018C E1A03002        MOV              R3, R2      ;         get subGr
+                                                            idXStart
+  413 00000190 EB000022        BL               identifySubGrid
+  414 00000194 E1A05003        MOV              R5, R3      ;         R5 = subG
+                                                            ridXStart
+  415 00000198 E1A06004        MOV              R6, R4      ;         R6 = test
+                                                            Row
+  416 0000019C E1A07005        MOV              R7, R5      ;         R7 = test
+                                                            Col
+  417 000001A0 EBFFFFA6        BL               getSquare   ;        testSquare
+                                                             = getSquare(testRo
+                                                            w, TestColumn)
+  418 000001A4 E1A08003        MOV              R8, R3      ;         R8 = test
+                                                            Square
+  419 000001A8         ifValidSubGrid1
+  420 000001A8 E3580000        CMP              R8, #0      ;         if(testSq
+                                                            uare != 0)       
+  421 000001AC 0A00001A        BEQ              endIfValidSubGrid1 ;      {
+  422 000001B0 E1A09006        MOV              R9, R6      ;           index1 
+                                                            = testRow
+  423 000001B4         forValidSubGrid1                     ;          for(inde
+                                                            x1; index1 < subGri
+                                                            dYStart+3; index1++
+                                                            )
+  424 000001B4 E284A003        ADD              R10, R4, #3 ;         {
+  425 000001B8 E159000A        CMP              R9, R10     ;
+  426 000001BC AA000015        BGE              endforValidSubGrid1 ;
+  427 000001C0 E1A0B007        MOV              R11, R7     ;          index2 =
+                                                             testCol
+
+
+
+ARM Macro Assembler    Page 10 
+
+
+  428 000001C4         forValidSubGrid2                     ;         for(index
+                                                            2; index2 < subGrid
+                                                            XStart+3; index2++)
+                                                            
+  429 000001C4 E285A003        ADD              R10, R5, #3 ;        {
+  430 000001C8 E15B000A        CMP              R11, R10    ;
+  431 000001CC AA00000E        BGE              endforValidSubGrid2 ;
+  432 000001D0 E92D0006        STMFD            SP!, {R1-R2} ;          storing
+                                                             passed row and col
+                                                            umn to stack for la
+                                                            ter comparision
+  433 000001D4 E1A01009        MOV              R1, R9      ;         
+  434 000001D8 E1A0200B        MOV              R2, R11     ;           testSqu
+                                                            are2 = getSquare(in
+                                                            dex1, index2)
+  435 000001DC EBFFFF97        BL               getSquare   ;
+  436 000001E0         ifValidSubGrid2
+  437 000001E0 E8BD0006        LDMFD            SP!, {R1-R2} ;          loading
+                                                             back passed row an
+                                                            d column from stack
+                                                            
+  438 000001E4 E1590001        CMP              R9, R1      ;            if(ind
+                                                            ex1 != row || index
+                                                            2 != column)
+  439 000001E8 1A000001        BNE              ifValidSubGrid3 ;         {
+  440 000001EC E15B0002        CMP              R11, R2     ;
+  441 000001F0 0A000003        BEQ              endifValidSubGrid2 ;
+  442 000001F4         ifValidSubGrid3
+  443 000001F4 E1580003        CMP              R8, R3      ;              if(t
+                                                            estSquare == testSq
+                                                            uare2)
+  444 000001F8 1A000001        BNE              endifValidSubGrid3 
+                                                            ;           {
+  445 000001FC E3A03000        LDR              R3, =0      ;               isV
+                                                            alidSubGrid = false
+                                                            ;
+  446 00000200 EA000005        B                endIfValidSubGrid1 
+                                                            ;           }
+  447 00000204         endifValidSubGrid3                   ;           }
+  448 00000204         endifValidSubGrid2                   ;
+  449 00000204         
+  450 00000204         
+  451 00000204 E28BB001        ADD              R11, R11, #1 ;             inde
+                                                            x2++
+  452 00000208 EAFFFFED        B                forValidSubGrid2 ;         }
+  453 0000020C         endforValidSubGrid2
+  454 0000020C         
+  455 0000020C         
+  456 0000020C E1A07005        MOV              R7, R5      ;          testCol 
+                                                            = subGridXStart;
+  457 00000210 E2899001        ADD              R9, R9, #1  ;         index1++
+  458 00000214 EAFFFFE6        B                forValidSubGrid1 ;         }
+  459 00000218         endforValidSubGrid1
+  460 00000218 E3A03001        LDR              R3, =1      ;          isValidS
+                                                            ubGrid = true;
+  461 0000021C         
+  462 0000021C         endIfValidSubGrid1
+  463 0000021C E8BD8FF0        LDMFD            SP!, {R4-R11, pc} ;      return
+                                                             isValidSubGrid
+
+
+
+ARM Macro Assembler    Page 11 
+
+
+  464 00000220         
+  465 00000220         
+  466 00000220         
+  467 00000220         
+  468 00000220         ; identifySubGrid subroutine
+  469 00000220         ; takes a value R3, and determines what subgrid it is in
+                       
+  470 00000220         ; R3 = row/column - testCase
+  471 00000220         
+  472 00000220         identifySubGrid
+  473 00000220 E92D4000        STMFD            SP!, {lr}   ;      save link re
+                                                            gister to the stack
+                                                            
+  474 00000224         ifIdentifySubGrid1                   ;       
+  475 00000224 E3530006        CMP              R3, #6      ;        if(testCas
+                                                            e >= 6)
+  476 00000228 3A000001        BLO              ifIdentifySubGrid2 ;     {
+  477 0000022C E3A03006        LDR              R3, =6      ;          subGridS
+                                                            tart = 6;
+  478 00000230 EA000004        B                endifIdentifySubGrid1 ;    }
+  479 00000234         
+  480 00000234         ifIdentifySubGrid2                   ;       
+  481 00000234 E3530003        CMP              R3, #3      ;        elseif(tes
+                                                            tCase >= 3)
+  482 00000238 3A000001        BLO              ifIdentifySubGrid3 ;     {     
+                                                            
+  483 0000023C E3A03003        LDR              R3, =3      ;          subGridS
+                                                            tart = 3;
+  484 00000240 EA000000        B                endifIdentifySubGrid2 ;    }
+  485 00000244         
+  486 00000244         ifIdentifySubGrid3                   ;       else
+  487 00000244 E3A03000        LDR              R3, =0      ;         subGridSt
+                                                            art = 0;
+  488 00000248         
+  489 00000248         endifIdentifySubGrid1                ;
+  490 00000248         endifIdentifySubGrid2                ;
+  491 00000248         
+  492 00000248 E8BD8000        LDMFD            SP!, {pc}   ;      restore link
+                                                             register to progra
+                                                            m counter
+  493 0000024C         
+  494 0000024C         
+  495 0000024C         
+  496 0000024C         ; sudoku subroutine
+  497 0000024C         ; takes a sudoku grid and tries to find a solution to it
+                       
+  498 0000024C         ; R0 = start address of grid
+  499 0000024C         ; R1 = row
+  500 0000024C         ; R2 = column
+  501 0000024C         ;
+  502 0000024C         sudoku
+  503 0000024C E92D43F0        STMFD            SP!, {R4-R9 , lr}
+  504 00000250 E3A04000        LDR              R4, =0      ;         boolean r
+                                                            esult = false;
+  505 00000254         ; R5 = nxtcol
+  506 00000254         ; R6 = nxtrow
+  507 00000254 E1A08001        MOV              R8, R1      ;        row
+  508 00000258 E1A09002        MOV              R9, R2      ;        column
+  509 0000025C         
+
+
+
+ARM Macro Assembler    Page 12 
+
+
+  510 0000025C         ;precompute next row and col
+  511 0000025C E2895001        ADD              R5, R9, #1  ;       nxtcol = co
+                                                            l + 1
+  512 00000260 E1A06008        MOV              R6, R8      ;        nxtrow = r
+                                                            ow
+  513 00000264         ifSudoku1
+  514 00000264 E3550008        CMP              R5, #8      ;        if(nxtcol 
+                                                            > 8)
+  515 00000268 DA000001        BLE              endifSudoku1 ;      {
+  516 0000026C E3A05000        LDR              R5, =0      ;          nxtcol =
+                                                             0;
+  517 00000270 E2866001        ADD              R6, R6, #1  ;         nxtrow++;
+                                                            
+  518 00000274         ;          }
+  519 00000274         endifSudoku1
+  520 00000274         
+  521 00000274         ifSudoku2
+  522 00000274 E1A01008        MOV              R1, R8
+  523 00000278 E1A02009        MOV              R2, R9
+  524 0000027C EBFFFF6F        BL               getSquare   ;       if(getSquar
+                                                            e(grid, row, col) !
+                                                            = 0)
+  525 00000280 E3530000        CMP              R3, #0      ;        {
+  526 00000284 0A000009        BEQ              elseSudoku2 ;      
+  527 00000288         ; a pre-filled square
+  528 00000288         ifSudoku3
+  529 00000288 E3580008        CMP              R8, #8      ;         if(row ==
+                                                             8 && col == 8)
+  530 0000028C 1A000002        BNE              elseSudoku1 ;       {
+  531 00000290 E3590008        CMP              R9, #8      ;           return 
+                                                            true;
+  532 00000294 1A000000        BNE              elseSudoku1 ;       }
+  533 00000298 EA000025        B                returnTrue  ;       
+  534 0000029C         elseSudoku1
+  535 0000029C         ; nothing to do here - just move on to the next square
+  536 0000029C E1A01006        MOV              R1, R6      ;         else
+  537 000002A0 E1A02005        MOV              R2, R5      ;         {
+  538 000002A4 EBFFFFE8        BL               sudoku      ;           result 
+                                                            = sudoku(grid, nxtr
+                                                            ow, nxtcol);
+  539 000002A8 E1A04003        MOV              R4, R3      ;         }
+  540 000002AC EA00001E        B                endifSudoku2 ;       }
+  541 000002B0         endelseSudoku1
+  542 000002B0         endifSudoku3
+  543 000002B0         elseSudoku2
+  544 000002B0         ; a blank square - try filling it with 1......9
+  545 000002B0 E3A07001        LDR              R7, =1      ;        else
+  546 000002B4         forSudoku1
+  547 000002B4 E3570009        CMP              R7, #9      ;        {
+  548 000002B8 CA000015        BGT              endforSudoku1 ;        for(byte
+                                                             try = 1; try <= 9 
+                                                            && !result; try++){
+                                                            
+  549 000002BC E3540000        CMP              R4, #0      ;         
+  550 000002C0 1A000013        BNE              endforSudoku1 ;       
+  551 000002C4 E1A03007        MOV              R3, R7      ;
+  552 000002C8 E1A01008        MOV              R1, R8      ;
+  553 000002CC E1A02009        MOV              R2, R9      ;
+  554 000002D0 EBFFFF60        BL               setSquare   ;        setSquare(
+
+
+
+ARM Macro Assembler    Page 13 
+
+
+                                                            grid, row, col, try
+                                                            );
+  555 000002D4         ifSudoku4
+  556 000002D4 EBFFFF65        BL               isValid     ;         if(isVali
+                                                            d(grid, row, col))
+  557 000002D8 E3530000        CMP              R3, #0      ;         {
+  558 000002DC 0A00000A        BEQ              endifSudoku4 ;
+  559 000002E0         ; putting the value here works so far...
+  560 000002E0         ifSudoku5
+  561 000002E0 E3580008        CMP              R8, #8      ;
+  562 000002E4 1A000003        BNE              elseSudoku3 ;
+  563 000002E8 E3590008        CMP              R9, #8      ;
+  564 000002EC 1A000001        BNE              elseSudoku3 ;       if(row == 8
+                                                             && col == 8){
+  565 000002F0         ;last square -- success!!
+  566 000002F0 E3A04001        LDR              R4, =1      ;          result =
+                                                             true;
+  567 000002F4 EA000004        B                endifSudoku5 ;        }
+  568 000002F8         elseSudoku3
+  569 000002F8         ;move on to the next square
+  570 000002F8 E1A01006        MOV              R1, R6      ;         else
+  571 000002FC E1A02005        MOV              R2, R5      ;         {
+  572 00000300 EBFFFFD1        BL               sudoku      ;             resul
+                                                            t = sudoku(grid, nx
+                                                            trow, nxtcol)
+  573 00000304 E1A04003        MOV              R4, R3      ;         }
+  574 00000308 EAFFFFFF        B                endelseSudoku3 ;      }
+  575 0000030C         endelseSudoku3
+  576 0000030C         endifSudoku5
+  577 0000030C         endifSudoku4
+  578 0000030C E2877001        ADD              R7, R7, #1  ;
+  579 00000310 EAFFFFE7        B                forSudoku1  ;       }
+  580 00000314         endforSudoku1
+  581 00000314         ifSudoku6
+  582 00000314 E3540000        CMP              R4, #0      ;
+  583 00000318 1A000003        BNE              endifSudoku6 ;
+  584 0000031C         ;made an earlier mistake - backtrack by setting the curr
+                       ent square back to zero/blank
+  585 0000031C E3A03000        LDR              R3, =0      ;        if(!result
+                                                            ){
+  586 00000320 E1A01008        MOV              R1, R8      ;         setSquare
+                                                            (grid, row, col, 0)
+                                                            ;
+  587 00000324 E1A02009        MOV              R2, R9      ;        }
+  588 00000328 EBFFFF4A        BL               setSquare   ;        
+  589 0000032C         endifSudoku6
+  590 0000032C         endelseSudoku2
+  591 0000032C         endifSudoku2
+  592 0000032C         
+  593 0000032C E1A03004        MOV              R3, R4      ;
+  594 00000330 E8BD83F0        LDMFD            SP!, {R4-R9 , pc} 
+                                                            ;    return result;
+                                                            
+  595 00000334         
+  596 00000334         
+  597 00000334         returnTrue
+  598 00000334 E3A03001        LDR              R3, =1      ;        result = t
+                                                            rue;
+  599 00000338 E8BD83F0        LDMFD            SP!, {R4-R9 , pc} 
+
+
+
+ARM Macro Assembler    Page 14 
+
+
+                                                            ;    return result;
+                                                            
+  600 0000033C         
+  601 0000033C         
+  602 0000033C         ; printBoard subroutine
+  603 0000033C         ; takes a sudoku board and prints it to the console
+  604 0000033C         ; R0 = start address of board
+  605 0000033C         ; note - takes a 19*19 array of characters
+  606 0000033C         ;
+  607 0000033C         
+  608 0000033C         printBoard
+  609 0000033C E92D40F0        STMFD            SP!, {R4-R7, lr}
+  610 00000340 E3A04000        LDR              R4, =0      ;        int rowInd
+                                                            ex = 0;
+  611 00000344         forPrintBoard
+  612 00000344 E3540013        CMP              R4, #19     ;       for(rowInde
+                                                            x; rowIndex<board.c
+                                                            olumnLength)
+  613 00000348 AA000012        BGE              endforPrintBoard
+  614 0000034C E3A05000        LDR              R5, =0      ;        int column
+                                                            Index = 0;
+  615 00000350         forPrintBoard2
+  616 00000350 E3550013        CMP              R5, #19     ;       for(columnI
+                                                            ndex; columnIndex<b
+                                                            oard.rowLength)
+  617 00000354 AA000009        BGE              endforPrintBoard2
+  618 00000358         ;System.out.print(board[rowIndex][columnIndex]);
+  619 00000358 E3A06013        LDR              R6, =19     ;       row_size
+  620 0000035C E0060694        MUL              R6, R4, R6  ;       row * row_s
+                                                            ize
+  621 00000360 E0866005        ADD              R6, R6, R5  ;       index = (ro
+                                                            w * row_size) + col
+                                                            umn
+  622 00000364 E7D07006        LDRB             R7, [R0, R6] ;       characterT
+                                                            oPrint = memory.byt
+                                                            e[boardStartAddr + 
+                                                            index]
+  623 00000368 E1A06000        MOV              R6, R0      ;
+  624 0000036C E1A00007        MOV              R0, R7      ;
+  625 00000370 EBFFFFFE        BL               sendchar    ;       printf(char
+                                                            acterToPrint)
+  626 00000374 E1A00006        MOV              R0, R6      ;
+  627 00000378 E2855001        ADD              R5, R5, #1  ;       columnIndex
+                                                            ++; 
+  628 0000037C EAFFFFF3        B                forPrintBoard2
+  629 00000380         endforPrintBoard2
+  630 00000380         ; System.out.print("\n")
+  631 00000380 E1A06000        MOV              R6, R0      ;
+  632 00000384 E3A0000A        LDR              R0, ='\n'   ;
+  633 00000388 EBFFFFFE        BL               sendchar    ;       printf("\n"
+                                                            )
+  634 0000038C E1A00006        MOV              R0, R6      ;
+  635 00000390 E2844001        ADD              R4, R4, #1  ;       rowIndex++;
+                                                            
+  636 00000394 EAFFFFEA        B                forPrintBoard
+  637 00000398         endforPrintBoard
+  638 00000398 E8BD80F0        LDMFD            SP!, {R4-R7, pc}
+  639 0000039C         
+  640 0000039C         
+
+
+
+ARM Macro Assembler    Page 15 
+
+
+  641 0000039C         storeGridToBoard
+  642 0000039C E92D43F0        STMFD            SP!, {R4-R9, lr} ;
+  643 000003A0 E3A04000        LDR              R4, =0      ;        int gridRo
+                                                            w = 0;
+  644 000003A4 E3A05000        LDR              R5, =0      ;        int gridCo
+                                                            lumn = 0;
+  645 000003A8 E3A06001        LDR              R6, =1      ;        int boardR
+                                                            ow = 1;
+  646 000003AC         forStoreGridToBoard
+  647 000003AC E3560012        CMP              R6, #18     ;       for(boardRo
+                                                            w; boardRow < 18)
+  648 000003B0 AA000014        BGE              endforStoreGridToBoard ;    {
+  649 000003B4 E3A07001        LDR              R7, =1      ;          int boar
+                                                            dColumn = 1;
+  650 000003B8         forStoreGridToBoard2
+  651 000003B8 E3570012        CMP              R7, #18     ;         for(board
+                                                            Column; boardColumn
+                                                             < 18)
+  652 000003BC AA00000F        BGE              endforStoreGridToBoard2 ;     {
+                                                            
+  653 000003C0         ifStoreGridToBoard
+  654 000003C0 E3550008        CMP              R5, #8      ;         if(gridCo
+                                                            lumn > grid.length-
+                                                            1)
+  655 000003C4 DA000001        BLE              endifStoreGridToBoard ;     {
+  656 000003C8 E3A05000        LDR              R5, =0      ;           gridCol
+                                                            umn = 0;
+  657 000003CC E2844001        ADD              R4, R4, #1  ;          gridRow+
+                                                            +
+  658 000003D0         ;           }
+  659 000003D0         endifStoreGridToBoard
+  660 000003D0 E3A08009        LDR              R8, =9      ;          gridRow_
+                                                            size;
+  661 000003D4 E0080894        MUL              R8, R4, R8  ;         gridRow *
+                                                             gridRow_size;
+  662 000003D8 E0858008        ADD              R8, R5, R8  ;         index = (
+                                                            gridRow * gridRow_s
+                                                            ize) + gridColumn;
+  663 000003DC E7D08008        LDRB             R8, [R0, R8] ;         extracte
+                                                            dNumber = memory.by
+                                                            te[gridStartAddr + 
+                                                            index];
+  664 000003E0 E2888030        ADD              R8, R8, #0x30 ;        //conver
+                                                            ting integer to asc
+                                                            ii
+  665 000003E4 E3A09013        LDR              R9, =19     ;          boardRow
+                                                            _size;
+  666 000003E8 E0090996        MUL              R9, R6, R9  ;         boardRow 
+                                                            * boardRow_size;
+  667 000003EC E0879009        ADD              R9, R7, R9  ;         index = (
+                                                            boardRow * boardRow
+                                                            _size) + boardColum
+                                                            n;
+  668 000003F0 E7C18009        STRB             R8, [R1, R9] ;         memory.b
+                                                            yte[boardStartAddr 
+                                                            + index] = extracte
+                                                            dNumber;
+  669 000003F4 E2855001        ADD              R5, R5, #1  ;         gridColum
+                                                            n++;
+
+
+
+ARM Macro Assembler    Page 16 
+
+
+  670 000003F8 E2877002        ADD              R7, R7, #2  ;         boardColu
+                                                            mn += 2
+  671 000003FC EAFFFFED        B                forStoreGridToBoard2 ;
+  672 00000400         endforStoreGridToBoard2
+  673 00000400         
+  674 00000400 E2866002        ADD              R6, R6, #2  ;       boardRow +=
+                                                             2;   
+  675 00000404 EAFFFFE8        B                forStoreGridToBoard ;
+  676 00000408         endforStoreGridToBoard
+  677 00000408 E8BD83F0        LDMFD            SP!, {R4-R9, pc}
+  678 0000040C         
+  679 0000040C         ; printMessage subroutine
+  680 0000040C         ; Prints if a board is solvable of not
+  681 0000040C         ; R3 - bool valid/1 or invalid/0
+  682 0000040C         printMessage
+  683 0000040C E92D40F0        STMFD            SP!, {R4-R7, lr}
+  684 00000410 E59F4054        LDR              R4, =gridIsSolvable
+  685 00000414 E59F5054        LDR              R5, =gridIsUnsolvable
+  686 00000418 E3530000        CMP              R3, #0      ;        if(gridSol
+                                                            ved)
+  687 0000041C 0A000007        BEQ              printNotValid ;      {
+  688 00000420 E3A06000        LDR              R6, =0      ;         for(int i
+                                                            ndex = 0; letter !=
+                                                             0; index++)
+  689 00000424         forPrintValid
+  690 00000424 E7D47006        LDRB             R7, [R4, R6] ;       {
+  691 00000428 E3570000        CMP              R7, #0      ;         letter = 
+                                                            memory.byte(gridIsS
+                                                            olvable + index);
+  692 0000042C 0A00000B        BEQ              endPrintMessage
+  693 00000430 E1A00007        MOV              R0, R7      ;         printf(le
+                                                            tter);
+  694 00000434 EBFFFFFE        BL               sendchar    ;
+  695 00000438 E2866001        ADD              R6, R6, #1  ;
+  696 0000043C EAFFFFF8        B                forPrintValid ;       }
+  697 00000440         ;          }
+  698 00000440         printNotValid
+  699 00000440 E3A06000        LDR              R6, =0      ;        else
+  700 00000444         forPrintNotValid                     ;       {
+  701 00000444 E7D57006        LDRB             R7, [R5, R6] ;       for(int in
+                                                            dex = 0; letter != 
+                                                            0; index++)
+  702 00000448 E3570000        CMP              R7, #0      ;         {
+  703 0000044C 0A000003        BEQ              endPrintMessage ;      letter =
+                                                             memory.byte(gridIs
+                                                            NotSolvable + index
+                                                            );
+  704 00000450 E1A00007        MOV              R0, R7      ;         printf(le
+                                                            tter);
+  705 00000454 EBFFFFFE        BL               sendchar    ;        }
+  706 00000458 E2866001        ADD              R6, R6, #1  ;       }
+  707 0000045C EAFFFFF8        B                forPrintNotValid ;
+  708 00000460         endPrintMessage
+  709 00000460 E8BD80F0        LDMFD            SP!, {R4-R7, pc}
+  710 00000464         
+  711 00000464         
+  712 00000464         
+  713 00000464 00000000 
+              00000000 
+
+
+
+ARM Macro Assembler    Page 17 
+
+
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000         AREA             Grids, DATA, READWRITE
+  714 00000000         
+  715 00000000         gridOne
+  716 00000000 07 09 00 
+              00 00 00 
+              03 00 00         DCB              7,9,0,0,0,0,3,0,0
+  717 00000009 00 00 00 
+              00 00 06 
+              09 00 00         DCB              0,0,0,0,0,6,9,0,0
+  718 00000012 08 00 00 
+              00 03 00 
+              00 07 06         DCB              8,0,0,0,3,0,0,7,6
+  719 0000001B 00 00 00 
+              00 00 05 
+              00 00 02         DCB              0,0,0,0,0,5,0,0,2
+  720 00000024 00 00 05 
+              04 01 08 
+              07 00 00         DCB              0,0,5,4,1,8,7,0,0
+  721 0000002D 04 00 00 
+              07 00 00 
+              00 00 00         DCB              4,0,0,7,0,0,0,0,0
+  722 00000036 06 01 00 
+              00 09 00 
+              00 00 08         DCB              6,1,0,0,9,0,0,0,8
+  723 0000003F 00 00 02 
+              03 00 00 
+              00 00 00         DCB              0,0,2,3,0,0,0,0,0
+  724 00000048 00 00 09 
+              00 00 00 
+              00 05 04         DCB              0,0,9,0,0,0,0,5,4
+  725 00000051         
+  726 00000051         testGrid1
+  727 00000051 08 09 00 
+              00 00 00 
+              03 00 00         DCB              8,9,0,0,0,0,3,0,0
+  728 0000005A 00 00 00 
+              00 00 06 
+              09 00 00         DCB              0,0,0,0,0,6,9,0,0
+  729 00000063 08 00 00 
+              00 03 00 
+              00 07 06         DCB              8,0,0,0,3,0,0,7,6
+  730 0000006C 00 00 00 
+              00 00 05 
+              00 00 02         DCB              0,0,0,0,0,5,0,0,2
+  731 00000075 00 00 05 
+              04 01 08 
+              07 00 00         DCB              0,0,5,4,1,8,7,0,0
+  732 0000007E 04 00 00 
+              07 00 00 
+              00 00 00         DCB              4,0,0,7,0,0,0,0,0
+  733 00000087 06 01 00 
+              00 09 00 
+              00 00 08         DCB              6,1,0,0,9,0,0,0,8
+
+
+
+ARM Macro Assembler    Page 18 
+
+
+  734 00000090 00 00 02 
+              03 00 00 
+              00 00 00         DCB              0,0,2,3,0,0,0,0,0
+  735 00000099 00 00 09 
+              00 00 00 
+              00 05 04         DCB              0,0,9,0,0,0,0,5,4
+  736 000000A2         
+  737 000000A2         testGrid2
+  738 000000A2 07 09 00 
+              00 00 00 
+              03 00 00         DCB              7,9,0,0,0,0,3,0,0
+  739 000000AB 00 00 00 
+              00 00 06 
+              09 00 00         DCB              0,0,0,0,0,6,9,0,0
+  740 000000B4 08 00 00 
+              00 03 00 
+              00 07 06         DCB              8,0,0,0,3,0,0,7,6
+  741 000000BD 00 00 00 
+              00 00 05 
+              00 00 02         DCB              0,0,0,0,0,5,0,0,2
+  742 000000C6 00 00 05 
+              04 01 08 
+              07 00 00         DCB              0,0,5,4,1,8,7,0,0
+  743 000000CF 04 00 00 
+              07 00 00 
+              00 00 00         DCB              4,0,0,7,0,0,0,0,0
+  744 000000D8 06 01 00 
+              00 09 00 
+              00 00 08         DCB              6,1,0,0,9,0,0,0,8
+  745 000000E1 00 00 02 
+              03 00 00 
+              00 00 00         DCB              0,0,2,3,0,0,0,0,0
+  746 000000EA 00 00 09 
+              00 00 00 
+              00 05 04         DCB              0,0,9,0,0,0,0,5,4
+  747 000000F3         
+  748 000000F3         testGrid3
+  749 000000F3 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  750 000000FC 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  751 00000105 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  752 0000010E 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  753 00000117 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  754 00000120 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  755 00000129 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  756 00000132 00 00 00 
+
+
+
+ARM Macro Assembler    Page 19 
+
+
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  757 0000013B 00 00 00 
+              00 00 00 
+              00 00 00         DCB              0,0,0,0,0,0,0,0,0
+  758 00000144         
+  759 00000144         gridIsSolvable
+  760 00000144 54 68 69 
+              73 20 67 
+              72 69 64 
+              20 69 73 
+              20 73 6F 
+              6C 76 61 
+              62 6C 65 
+              0A 00            DCB              "This grid is solvable","\n",0
+  761 0000015B         
+  762 0000015B         gridIsUnsolvable
+  763 0000015B 54 68 69 
+              73 20 67 
+              72 69 64 
+              20 69 73 
+              20 75 6E 
+              73 6F 6C 
+              76 61 62 
+              6C 65 0A 
+              00               DCB              "This grid is unsolvable","\n",
+0
+  764 00000174         
+  765 00000174         board
+  766 00000174 2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D               DCB              '-','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','-'
+  767 00000187 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  768 0000019A 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  769 000001AD 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+
+
+
+ARM Macro Assembler    Page 20 
+
+
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  770 000001C0 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  771 000001D3 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  772 000001E6 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  773 000001F9 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  774 0000020C 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  775 0000021F 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  776 00000232 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  777 00000245 7C 20 7C 
+
+
+
+ARM Macro Assembler    Page 21 
+
+
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  778 00000258 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  779 0000026B 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  780 0000027E 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  781 00000291 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  782 000002A4 7C 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              7C               DCB              '|','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','|'
+  783 000002B7 7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C 20 7C 
+              20 7C 20 
+              7C               DCB              '|', ' ','|', ' ', '|', ' ', '|
+', ' ', '|', ' ', '|', ' ', '|',' ', '|', ' ', '|', ' ', '|'
+  784 000002CA 2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+              2D 2D 2D 
+
+
+
+ARM Macro Assembler    Page 22 
+
+
+              2D 2D 2D 
+              2D 2D 2D 
+              2D               DCB              '-','-','-','-','-','-','-','-'
+,'-','-','-','-','-','-','-','-','-','-','-'
+  785 000002DD         ;
+  786 000002DD         ; add other grids for test cases
+  787 000002DD         ;
+  788 000002DD         
+  789 000002DD                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\s
+udoku.d -o.\sudoku.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -
+IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine="__MICROLIB
+ SETA 1" --predefine="__UVISION_VERSION SETA 524" --predefine="NO_CLOCK_SETUP S
+ETA 1" --predefine="NO_EMC_SETUP SETA 1" --predefine="RAM_INTVEC SETA 1" --pred
+efine="RAM_MODE SETA 1" --predefine="REMAP SETA 1" --list=.\sudoku.lst Sudoku.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Sudoku 00000000
+
+Symbol: Sudoku
+   Definitions
+      At line 1 in file Sudoku.s
+   Uses
+      None
+Comment: Sudoku unused
+elseSudoku1 0000029C
+
+Symbol: elseSudoku1
+   Definitions
+      At line 534 in file Sudoku.s
+   Uses
+      At line 530 in file Sudoku.s
+      At line 532 in file Sudoku.s
+
+elseSudoku2 000002B0
+
+Symbol: elseSudoku2
+   Definitions
+      At line 543 in file Sudoku.s
+   Uses
+      At line 526 in file Sudoku.s
+Comment: elseSudoku2 used once
+elseSudoku3 000002F8
+
+Symbol: elseSudoku3
+   Definitions
+      At line 568 in file Sudoku.s
+   Uses
+      At line 562 in file Sudoku.s
+      At line 564 in file Sudoku.s
+
+endIfValidSubGrid1 0000021C
+
+Symbol: endIfValidSubGrid1
+   Definitions
+      At line 462 in file Sudoku.s
+   Uses
+      At line 421 in file Sudoku.s
+      At line 446 in file Sudoku.s
+
+endPrintMessage 00000460
+
+Symbol: endPrintMessage
+   Definitions
+      At line 708 in file Sudoku.s
+   Uses
+      At line 692 in file Sudoku.s
+      At line 703 in file Sudoku.s
+
+endelseSudoku1 000002B0
+
+Symbol: endelseSudoku1
+   Definitions
+      At line 541 in file Sudoku.s
+   Uses
+      None
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+Comment: endelseSudoku1 unused
+endelseSudoku2 0000032C
+
+Symbol: endelseSudoku2
+   Definitions
+      At line 590 in file Sudoku.s
+   Uses
+      None
+Comment: endelseSudoku2 unused
+endelseSudoku3 0000030C
+
+Symbol: endelseSudoku3
+   Definitions
+      At line 575 in file Sudoku.s
+   Uses
+      At line 574 in file Sudoku.s
+Comment: endelseSudoku3 used once
+endforPrintBoard 00000398
+
+Symbol: endforPrintBoard
+   Definitions
+      At line 637 in file Sudoku.s
+   Uses
+      At line 613 in file Sudoku.s
+Comment: endforPrintBoard used once
+endforPrintBoard2 00000380
+
+Symbol: endforPrintBoard2
+   Definitions
+      At line 629 in file Sudoku.s
+   Uses
+      At line 617 in file Sudoku.s
+Comment: endforPrintBoard2 used once
+endforStoreGridToBoard 00000408
+
+Symbol: endforStoreGridToBoard
+   Definitions
+      At line 676 in file Sudoku.s
+   Uses
+      At line 648 in file Sudoku.s
+Comment: endforStoreGridToBoard used once
+endforStoreGridToBoard2 00000400
+
+Symbol: endforStoreGridToBoard2
+   Definitions
+      At line 672 in file Sudoku.s
+   Uses
+      At line 652 in file Sudoku.s
+Comment: endforStoreGridToBoard2 used once
+endforSudoku1 00000314
+
+Symbol: endforSudoku1
+   Definitions
+      At line 580 in file Sudoku.s
+   Uses
+      At line 548 in file Sudoku.s
+      At line 550 in file Sudoku.s
+
+endforValidColumn 00000174
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: endforValidColumn
+   Definitions
+      At line 394 in file Sudoku.s
+   Uses
+      At line 379 in file Sudoku.s
+Comment: endforValidColumn used once
+endforValidRow 00000114
+
+Symbol: endforValidRow
+   Definitions
+      At line 351 in file Sudoku.s
+   Uses
+      At line 336 in file Sudoku.s
+Comment: endforValidRow used once
+endforValidSubGrid1 00000218
+
+Symbol: endforValidSubGrid1
+   Definitions
+      At line 459 in file Sudoku.s
+   Uses
+      At line 426 in file Sudoku.s
+Comment: endforValidSubGrid1 used once
+endforValidSubGrid2 0000020C
+
+Symbol: endforValidSubGrid2
+   Definitions
+      At line 453 in file Sudoku.s
+   Uses
+      At line 431 in file Sudoku.s
+Comment: endforValidSubGrid2 used once
+endifIdentifySubGrid1 00000248
+
+Symbol: endifIdentifySubGrid1
+   Definitions
+      At line 489 in file Sudoku.s
+   Uses
+      At line 478 in file Sudoku.s
+Comment: endifIdentifySubGrid1 used once
+endifIdentifySubGrid2 00000248
+
+Symbol: endifIdentifySubGrid2
+   Definitions
+      At line 490 in file Sudoku.s
+   Uses
+      At line 484 in file Sudoku.s
+Comment: endifIdentifySubGrid2 used once
+endifStoreGridToBoard 000003D0
+
+Symbol: endifStoreGridToBoard
+   Definitions
+      At line 659 in file Sudoku.s
+   Uses
+      At line 655 in file Sudoku.s
+Comment: endifStoreGridToBoard used once
+endifSudoku1 00000274
+
+Symbol: endifSudoku1
+   Definitions
+
+
+
+ARM Macro Assembler    Page 4 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 519 in file Sudoku.s
+   Uses
+      At line 515 in file Sudoku.s
+Comment: endifSudoku1 used once
+endifSudoku2 0000032C
+
+Symbol: endifSudoku2
+   Definitions
+      At line 591 in file Sudoku.s
+   Uses
+      At line 540 in file Sudoku.s
+Comment: endifSudoku2 used once
+endifSudoku3 000002B0
+
+Symbol: endifSudoku3
+   Definitions
+      At line 542 in file Sudoku.s
+   Uses
+      None
+Comment: endifSudoku3 unused
+endifSudoku4 0000030C
+
+Symbol: endifSudoku4
+   Definitions
+      At line 577 in file Sudoku.s
+   Uses
+      At line 558 in file Sudoku.s
+Comment: endifSudoku4 used once
+endifSudoku5 0000030C
+
+Symbol: endifSudoku5
+   Definitions
+      At line 576 in file Sudoku.s
+   Uses
+      At line 567 in file Sudoku.s
+Comment: endifSudoku5 used once
+endifSudoku6 0000032C
+
+Symbol: endifSudoku6
+   Definitions
+      At line 589 in file Sudoku.s
+   Uses
+      At line 583 in file Sudoku.s
+Comment: endifSudoku6 used once
+endifValidColumn1 00000174
+
+Symbol: endifValidColumn1
+   Definitions
+      At line 395 in file Sudoku.s
+   Uses
+      At line 375 in file Sudoku.s
+      At line 389 in file Sudoku.s
+
+endifValidColumn2 0000016C
+
+Symbol: endifValidColumn2
+   Definitions
+      At line 391 in file Sudoku.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 382 in file Sudoku.s
+Comment: endifValidColumn2 used once
+endifValidColumn3 0000016C
+
+Symbol: endifValidColumn3
+   Definitions
+      At line 390 in file Sudoku.s
+   Uses
+      At line 387 in file Sudoku.s
+Comment: endifValidColumn3 used once
+endifValidRow1 00000114
+
+Symbol: endifValidRow1
+   Definitions
+      At line 352 in file Sudoku.s
+   Uses
+      At line 332 in file Sudoku.s
+      At line 346 in file Sudoku.s
+
+endifValidRow2 0000010C
+
+Symbol: endifValidRow2
+   Definitions
+      At line 348 in file Sudoku.s
+   Uses
+      At line 339 in file Sudoku.s
+Comment: endifValidRow2 used once
+endifValidRow3 0000010C
+
+Symbol: endifValidRow3
+   Definitions
+      At line 347 in file Sudoku.s
+   Uses
+      At line 344 in file Sudoku.s
+Comment: endifValidRow3 used once
+endifValidSubGrid2 00000204
+
+Symbol: endifValidSubGrid2
+   Definitions
+      At line 448 in file Sudoku.s
+   Uses
+      At line 441 in file Sudoku.s
+Comment: endifValidSubGrid2 used once
+endifValidSubGrid3 00000204
+
+Symbol: endifValidSubGrid3
+   Definitions
+      At line 447 in file Sudoku.s
+   Uses
+      At line 444 in file Sudoku.s
+Comment: endifValidSubGrid3 used once
+forPrintBoard 00000344
+
+Symbol: forPrintBoard
+   Definitions
+      At line 611 in file Sudoku.s
+   Uses
+      At line 636 in file Sudoku.s
+Comment: forPrintBoard used once
+
+
+
+ARM Macro Assembler    Page 6 Alphabetic symbol ordering
+Relocatable symbols
+
+forPrintBoard2 00000350
+
+Symbol: forPrintBoard2
+   Definitions
+      At line 615 in file Sudoku.s
+   Uses
+      At line 628 in file Sudoku.s
+Comment: forPrintBoard2 used once
+forPrintNotValid 00000444
+
+Symbol: forPrintNotValid
+   Definitions
+      At line 700 in file Sudoku.s
+   Uses
+      At line 707 in file Sudoku.s
+Comment: forPrintNotValid used once
+forPrintValid 00000424
+
+Symbol: forPrintValid
+   Definitions
+      At line 689 in file Sudoku.s
+   Uses
+      At line 696 in file Sudoku.s
+Comment: forPrintValid used once
+forStoreGridToBoard 000003AC
+
+Symbol: forStoreGridToBoard
+   Definitions
+      At line 646 in file Sudoku.s
+   Uses
+      At line 675 in file Sudoku.s
+Comment: forStoreGridToBoard used once
+forStoreGridToBoard2 000003B8
+
+Symbol: forStoreGridToBoard2
+   Definitions
+      At line 650 in file Sudoku.s
+   Uses
+      At line 671 in file Sudoku.s
+Comment: forStoreGridToBoard2 used once
+forSudoku1 000002B4
+
+Symbol: forSudoku1
+   Definitions
+      At line 546 in file Sudoku.s
+   Uses
+      At line 579 in file Sudoku.s
+Comment: forSudoku1 used once
+forValidColumn 00000144
+
+Symbol: forValidColumn
+   Definitions
+      At line 377 in file Sudoku.s
+   Uses
+      At line 393 in file Sudoku.s
+Comment: forValidColumn used once
+forValidRow 000000E4
+
+Symbol: forValidRow
+
+
+
+ARM Macro Assembler    Page 7 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 334 in file Sudoku.s
+   Uses
+      At line 350 in file Sudoku.s
+Comment: forValidRow used once
+forValidSubGrid1 000001B4
+
+Symbol: forValidSubGrid1
+   Definitions
+      At line 423 in file Sudoku.s
+   Uses
+      At line 458 in file Sudoku.s
+Comment: forValidSubGrid1 used once
+forValidSubGrid2 000001C4
+
+Symbol: forValidSubGrid2
+   Definitions
+      At line 428 in file Sudoku.s
+   Uses
+      At line 452 in file Sudoku.s
+Comment: forValidSubGrid2 used once
+getSquare 00000040
+
+Symbol: getSquare
+   Definitions
+      At line 258 in file Sudoku.s
+   Uses
+      At line 324 in file Sudoku.s
+      At line 341 in file Sudoku.s
+      At line 367 in file Sudoku.s
+      At line 384 in file Sudoku.s
+      At line 417 in file Sudoku.s
+      At line 435 in file Sudoku.s
+      At line 524 in file Sudoku.s
+
+identifySubGrid 00000220
+
+Symbol: identifySubGrid
+   Definitions
+      At line 472 in file Sudoku.s
+   Uses
+      At line 410 in file Sudoku.s
+      At line 413 in file Sudoku.s
+
+ifIdentifySubGrid1 00000224
+
+Symbol: ifIdentifySubGrid1
+   Definitions
+      At line 474 in file Sudoku.s
+   Uses
+      None
+Comment: ifIdentifySubGrid1 unused
+ifIdentifySubGrid2 00000234
+
+Symbol: ifIdentifySubGrid2
+   Definitions
+      At line 480 in file Sudoku.s
+   Uses
+      At line 476 in file Sudoku.s
+
+
+
+ARM Macro Assembler    Page 8 Alphabetic symbol ordering
+Relocatable symbols
+
+Comment: ifIdentifySubGrid2 used once
+ifIdentifySubGrid3 00000244
+
+Symbol: ifIdentifySubGrid3
+   Definitions
+      At line 486 in file Sudoku.s
+   Uses
+      At line 482 in file Sudoku.s
+Comment: ifIdentifySubGrid3 used once
+ifStoreGridToBoard 000003C0
+
+Symbol: ifStoreGridToBoard
+   Definitions
+      At line 653 in file Sudoku.s
+   Uses
+      None
+Comment: ifStoreGridToBoard unused
+ifSudoku1 00000264
+
+Symbol: ifSudoku1
+   Definitions
+      At line 513 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku1 unused
+ifSudoku2 00000274
+
+Symbol: ifSudoku2
+   Definitions
+      At line 521 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku2 unused
+ifSudoku3 00000288
+
+Symbol: ifSudoku3
+   Definitions
+      At line 528 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku3 unused
+ifSudoku4 000002D4
+
+Symbol: ifSudoku4
+   Definitions
+      At line 555 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku4 unused
+ifSudoku5 000002E0
+
+Symbol: ifSudoku5
+   Definitions
+      At line 560 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku5 unused
+ifSudoku6 00000314
+
+
+
+
+ARM Macro Assembler    Page 9 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: ifSudoku6
+   Definitions
+      At line 581 in file Sudoku.s
+   Uses
+      None
+Comment: ifSudoku6 unused
+ifValidColumn1 00000138
+
+Symbol: ifValidColumn1
+   Definitions
+      At line 373 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidColumn1 unused
+ifValidColumn2 0000014C
+
+Symbol: ifValidColumn2
+   Definitions
+      At line 380 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidColumn2 unused
+ifValidColumn3 0000015C
+
+Symbol: ifValidColumn3
+   Definitions
+      At line 385 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidColumn3 unused
+ifValidRow1 000000D8
+
+Symbol: ifValidRow1
+   Definitions
+      At line 330 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidRow1 unused
+ifValidRow2 000000EC
+
+Symbol: ifValidRow2
+   Definitions
+      At line 337 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidRow2 unused
+ifValidRow3 000000FC
+
+Symbol: ifValidRow3
+   Definitions
+      At line 342 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidRow3 unused
+ifValidSubGrid1 000001A8
+
+Symbol: ifValidSubGrid1
+   Definitions
+      At line 419 in file Sudoku.s
+
+
+
+ARM Macro Assembler    Page 10 Alphabetic symbol ordering
+Relocatable symbols
+
+   Uses
+      None
+Comment: ifValidSubGrid1 unused
+ifValidSubGrid2 000001E0
+
+Symbol: ifValidSubGrid2
+   Definitions
+      At line 436 in file Sudoku.s
+   Uses
+      None
+Comment: ifValidSubGrid2 unused
+ifValidSubGrid3 000001F4
+
+Symbol: ifValidSubGrid3
+   Definitions
+      At line 442 in file Sudoku.s
+   Uses
+      At line 439 in file Sudoku.s
+Comment: ifValidSubGrid3 used once
+isValid 00000070
+
+Symbol: isValid
+   Definitions
+      At line 292 in file Sudoku.s
+   Uses
+      At line 556 in file Sudoku.s
+Comment: isValid used once
+isValidColumn 0000011C
+
+Symbol: isValidColumn
+   Definitions
+      At line 364 in file Sudoku.s
+   Uses
+      At line 301 in file Sudoku.s
+Comment: isValidColumn used once
+isValidRow 000000BC
+
+Symbol: isValidRow
+   Definitions
+      At line 322 in file Sudoku.s
+   Uses
+      At line 296 in file Sudoku.s
+Comment: isValidRow used once
+isValidSubgrid 0000017C
+
+Symbol: isValidSubgrid
+   Definitions
+      At line 406 in file Sudoku.s
+   Uses
+      At line 306 in file Sudoku.s
+Comment: isValidSubgrid used once
+notValid 000000B8
+
+Symbol: notValid
+   Definitions
+      At line 311 in file Sudoku.s
+   Uses
+      At line 298 in file Sudoku.s
+      At line 303 in file Sudoku.s
+
+
+
+ARM Macro Assembler    Page 11 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 308 in file Sudoku.s
+
+printBoard 0000033C
+
+Symbol: printBoard
+   Definitions
+      At line 608 in file Sudoku.s
+   Uses
+      At line 233 in file Sudoku.s
+      At line 245 in file Sudoku.s
+
+printMessage 0000040C
+
+Symbol: printMessage
+   Definitions
+      At line 682 in file Sudoku.s
+   Uses
+      At line 239 in file Sudoku.s
+Comment: printMessage used once
+printNotValid 00000440
+
+Symbol: printNotValid
+   Definitions
+      At line 698 in file Sudoku.s
+   Uses
+      At line 687 in file Sudoku.s
+Comment: printNotValid used once
+returnTrue 00000334
+
+Symbol: returnTrue
+   Definitions
+      At line 597 in file Sudoku.s
+   Uses
+      At line 533 in file Sudoku.s
+Comment: returnTrue used once
+setSquare 00000058
+
+Symbol: setSquare
+   Definitions
+      At line 276 in file Sudoku.s
+   Uses
+      At line 554 in file Sudoku.s
+      At line 588 in file Sudoku.s
+
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 6 in file Sudoku.s
+   Uses
+      At line 2 in file Sudoku.s
+Comment: start used once
+stop 0000003C
+
+Symbol: stop
+   Definitions
+      At line 247 in file Sudoku.s
+   Uses
+      At line 247 in file Sudoku.s
+
+
+
+ARM Macro Assembler    Page 12 Alphabetic symbol ordering
+Relocatable symbols
+
+Comment: stop used once
+storeGridToBoard 0000039C
+
+Symbol: storeGridToBoard
+   Definitions
+      At line 641 in file Sudoku.s
+   Uses
+      At line 231 in file Sudoku.s
+      At line 243 in file Sudoku.s
+
+sudoku 0000024C
+
+Symbol: sudoku
+   Definitions
+      At line 502 in file Sudoku.s
+   Uses
+      At line 238 in file Sudoku.s
+      At line 538 in file Sudoku.s
+      At line 572 in file Sudoku.s
+
+81 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Grids 00000000
+
+Symbol: Grids
+   Definitions
+      At line 713 in file Sudoku.s
+   Uses
+      None
+Comment: Grids unused
+board 00000174
+
+Symbol: board
+   Definitions
+      At line 765 in file Sudoku.s
+   Uses
+      At line 230 in file Sudoku.s
+      At line 232 in file Sudoku.s
+      At line 242 in file Sudoku.s
+      At line 244 in file Sudoku.s
+
+gridIsSolvable 00000144
+
+Symbol: gridIsSolvable
+   Definitions
+      At line 759 in file Sudoku.s
+   Uses
+      At line 684 in file Sudoku.s
+Comment: gridIsSolvable used once
+gridIsUnsolvable 0000015B
+
+Symbol: gridIsUnsolvable
+   Definitions
+      At line 762 in file Sudoku.s
+   Uses
+      At line 685 in file Sudoku.s
+Comment: gridIsUnsolvable used once
+gridOne 00000000
+
+Symbol: gridOne
+   Definitions
+      At line 715 in file Sudoku.s
+   Uses
+      At line 229 in file Sudoku.s
+      At line 237 in file Sudoku.s
+      At line 241 in file Sudoku.s
+
+testGrid1 00000051
+
+Symbol: testGrid1
+   Definitions
+      At line 726 in file Sudoku.s
+   Uses
+      None
+Comment: testGrid1 unused
+testGrid2 000000A2
+
+Symbol: testGrid2
+   Definitions
+      At line 737 in file Sudoku.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      None
+Comment: testGrid2 unused
+testGrid3 000000F3
+
+Symbol: testGrid3
+   Definitions
+      At line 748 in file Sudoku.s
+   Uses
+      None
+Comment: testGrid3 unused
+8 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+sendchar 00000000
+
+Symbol: sendchar
+   Definitions
+      At line 3 in file Sudoku.s
+   Uses
+      At line 625 in file Sudoku.s
+      At line 633 in file Sudoku.s
+      At line 694 in file Sudoku.s
+      At line 705 in file Sudoku.s
+
+1 symbol
+430 symbols in table
