@@ -1,0 +1,366 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             FpAdd, CODE, READONLY
+    2 00000000                 IMPORT           main
+    3 00000000                 EXPORT           start
+    4 00000000         
+    5 00000000         start
+    6 00000000         
+    7 00000000         ;
+    8 00000000         ; Part 1 - decode
+    9 00000000         ;
+   10 00000000         
+   11 00000000 E3A0043F        LDR              r0, =0x3F000000 ; fpval1 = 0.5
+   12 00000004 E59F1168        LDR              r1, =0x3EE00000 
+                                                            ; fpval2 = 0.4375
+   13 00000008         
+   14 00000008 EB000000        BL               fpadd
+   15 0000000C         
+   16 0000000C EAFFFFFE 
+                       stop    B                stop
+   17 00000010         
+   18 00000010         ; fpadd subroutine
+   19 00000010         ; Adds two IEEE754 single precision floating point value
+                       s
+   20 00000010         ; Parameters:
+   21 00000010         ;   R0: first floating point value
+   22 00000010         ;   R1: second floating point value
+   23 00000010         ; Return value:
+   24 00000010         ;   R0: floating point result
+   25 00000010         ;
+   26 00000010         fpadd
+   27 00000010 E92D40F0        STMFD            SP!, {R4-R7 ,lr}
+   28 00000014 E1A04000        MOV              R4, R0
+   29 00000018 E1A05001        MOV              R5, R1
+   30 0000001C EB000010        BL               getFraction
+   31 00000020 E1A06003        MOV              R6, R3
+   32 00000024 E1A00004        MOV              R0, R4
+   33 00000028 EB000017        BL               getExponent
+   34 0000002C E1A07003        MOV              R7, R3
+   35 00000030 E1A00005        MOV              R0, R5
+   36 00000034 EB00000A        BL               getFraction
+   37 00000038 E1A08003        MOV              R8, R3
+   38 0000003C E1A00005        MOV              R0, R5
+   39 00000040 EB000011        BL               getExponent
+   40 00000044 E1A02003        MOV              R2, R3
+   41 00000048 E1A00008        MOV              R0, R8
+   42 0000004C E1A03007        MOV              R3, R7
+   43 00000050 E1A01006        MOV              R1, R6
+   44 00000054 EB000014        BL               bringToSamePower
+   45 00000058 EB000027        BL               addNumbers
+   46 0000005C EB00003B        BL               storeResult
+   47 00000060         
+   48 00000060 E8BD80F0        LDMFD            SP!, {R4-R7, PC}
+   49 00000064         
+   50 00000064         
+   51 00000064         
+   52 00000064         
+   53 00000064         
+   54 00000064         
+   55 00000064         
+   56 00000064         ;get fraction subroutine
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   57 00000064         ;takes a number in R0
+   58 00000064         ;returns fraction in R3
+   59 00000064         
+   60 00000064         getFraction
+   61 00000064 E92D4070        STMFD            SP!, {R4-R6, lr}
+   62 00000068 E59F5108        LDR              R5, =0x007FFFFF 
+                                                            ;mask for fraction
+   63 0000006C E0004005        AND              R4, R0, R5  ;get fraction
+   64 00000070 E3844502        ORR              R4, R4, #0x00800000 
+                                                            ;reintroduce 1
+   65 00000074 E1B06080        MOVS             R6, R0, LSL#1 ;
+   66 00000078 3A000001        BCC              notNegative
+   67 0000007C E1E04004        MVN              R4, R4
+   68 00000080 E2844001        ADD              R4, R4, #1
+   69 00000084         notNegative
+   70 00000084 E1A03004        MOV              R3, R4      ;
+   71 00000088 E8BD8070        LDMFD            SP!, {R4-R6, pc}
+   72 0000008C         
+   73 0000008C         ;get exponent subroutine
+   74 0000008C         ;takes a number in R0
+   75 0000008C         ;returns exponent in R3
+   76 0000008C         
+   77 0000008C         getExponent
+   78 0000008C E92D4070        STMFD            SP!, {R4-R6, lr}
+   79 00000090 E59F50E4        LDR              R5, =0x7F800000
+   80 00000094 E0004005        AND              R4, R0, R5  ;get exponent
+   81 00000098 E1A04BA4        MOV              R4, R4, LSR#23 ;shift to right 
+                                                            of register
+   82 0000009C E3A0607F        LDR              R6, =127    ;      
+   83 000000A0 E0444006        SUB              R4, R4, R6  ; subtract offset
+   84 000000A4 E1A03004        MOV              R3, R4
+   85 000000A8 E8BD8070        LDMFD            SP!, {R4-R6, pc}
+   86 000000AC         
+   87 000000AC         ;bringToSamePower subroutine
+   88 000000AC         ;takes fractions in R0 & R1
+   89 000000AC         ;takes exponents in R2 & R3
+   90 000000AC         
+   91 000000AC         bringToSamePower
+   92 000000AC E92D41F0        STMFD            SP!, {R4-R8, lr}
+   93 000000B0 E1520003        CMP              R2, R3      ; if(num1<num2)
+   94 000000B4 CA000004        BGT              numOneBigger
+   95 000000B8 E1A04003        MOV              R4, R3      ; R4 = num2 exponen
+                                                            t
+   96 000000BC E1A05002        MOV              R5, R2      ; R5 = num1 exponen
+                                                            t
+   97 000000C0 E1A06001        MOV              R6, R1      ; R6 = num2 fractio
+                                                            n
+   98 000000C4 E1A07000        MOV              R7, R0      ; R7 = num1 fractio
+                                                            n
+   99 000000C8 EA000003        B                endnumOneBigger
+  100 000000CC         numOneBigger
+  101 000000CC E1A04002        MOV              R4, R2      ; R4 = num1 exponen
+                                                            t
+  102 000000D0 E1A05003        MOV              R5, R3      ; R5 = num2 exponen
+                                                            t
+  103 000000D4 E1A06000        MOV              R6, R0      ; R6 = num1 fractio
+                                                            n
+  104 000000D8 E1A07001        MOV              R7, R1      ; R7 = num2 fractio
+                                                            n
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  105 000000DC         endnumOneBigger
+  106 000000DC E0448005        SUB              R8, R4, R5  ; adjustAmount = bi
+                                                            ggerExponent - smal
+                                                            lerExponent
+  107 000000E0 E1A07837        MOV              R7, R7, LSR R8 ; adjust smaller
+                                                             number fraction
+  108 000000E4 E0855008        ADD              R5, R5, R8  ; adjust smaller nu
+                                                            mber exponent
+  109 000000E8 E1A02004        MOV              R2, R4
+  110 000000EC E1A03005        MOV              R3, R5
+  111 000000F0 E1A00006        MOV              R0, R6
+  112 000000F4 E1A01007        MOV              R1, R7
+  113 000000F8 E8BD81F0        LDMFD            SP!, {R4-R8, PC}
+  114 000000FC         
+  115 000000FC         ;add numbers subroutine
+  116 000000FC         ;takes two numbers (exponent and fraction) and adds them
+                       
+  117 000000FC         ;R0 num1 fraction
+  118 000000FC         ;R1 num2 fraction
+  119 000000FC         ;R2 num1 exponent
+  120 000000FC         ;R3 num2 exponent
+  121 000000FC         
+  122 000000FC         ;returns result 
+  123 000000FC         ; R0 - result exponent
+  124 000000FC         ; R1 - result fraction
+  125 000000FC         addNumbers
+  126 000000FC E92D47F0        STMFD            SP!, {R4-R10 , lr}
+  127 00000100 E1A04002        MOV              R4, R2      ; R4 = num1 exponen
+                                                            t
+  128 00000104 E1A05003        MOV              R5, R3      ; R5 = num2 exponen
+                                                            t
+  129 00000108 E1A06000        MOV              R6, R0      ; R6 = num1 fractio
+                                                            n
+  130 0000010C E1A07001        MOV              R7, R1      ; R7 = num2 fractio
+                                                            n
+  131 00000110 E0868007        ADD              R8, R6, R7  ; num1 + num2
+  132 00000114 E3A09000        LDR              R9, =0
+  133 00000118 E1A0A008        MOV              R10, R8
+  134 0000011C         countLeadingZeros
+  135 0000011C E1B0A08A        MOVS             R10, R10, LSL#1
+  136 00000120 2A000001        BCS              endLeadingZeros
+  137 00000124 E2899001        ADD              R9, R9, #1
+  138 00000128 EAFFFFFB        B                countLeadingZeros
+  139 0000012C         endLeadingZeros
+  140 0000012C E3A0A008        LDR              R10, =8
+  141 00000130 E04A9009        SUB              R9, R10, R9
+  142 00000134 E1A08938        MOV              R8, R8, LSR R9
+  143 00000138 E0844009        ADD              R4, R4, R9
+  144 0000013C         
+  145 0000013C E3A0A07F        LDR              R10, =127
+  146 00000140 E084400A        ADD              R4, R4, R10
+  147 00000144 E1A00004        MOV              R0, R4
+  148 00000148 E1A01008        MOV              R1, R8
+  149 0000014C E8BD87F0        LDMFD            sp!, {R4-R10, PC}
+  150 00000150         
+  151 00000150         ;store result subroutine
+  152 00000150         ;R0 = exponent
+  153 00000150         ;R1 = fraction
+  154 00000150         ;returns result in R0 (ieee 754 form)
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  155 00000150         storeResult
+  156 00000150 E92D4070        STMFD            SP!, {R4-R6, lr}
+  157 00000154 E1A05000        MOV              R5, R0      ; exponent
+  158 00000158 E1A06001        MOV              R6, R1      ; fraction
+  159 0000015C E59F7014        LDR              R7, =0x007FFFFF 
+                                                            ;mask for fraction
+  160 00000160 E0066007        AND              R6, R6, R7  ;remove leading 1
+  161 00000164 E1A05B85        MOV              R5, R5, LSL#23
+  162 00000168 E1866005        ORR              R6, R6, R5
+  163 0000016C E1A00006        MOV              R0, R6
+  164 00000170 E8BD8070        LDMFD            sp!, {R4-R6, PC}
+  165 00000174         
+  166 00000174                 END
+              3EE00000 
+              007FFFFF 
+              7F800000 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\f
+padd.d -o.\fpadd.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC
+:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine="__MICROLIB S
+ETA 1" --predefine="__UVISION_VERSION SETA 524" --predefine="NO_CLOCK_SETUP SET
+A 1" --predefine="NO_EMC_SETUP SETA 1" --predefine="RAM_INTVEC SETA 1" --predef
+ine="RAM_MODE SETA 1" --predefine="REMAP SETA 1" --list=.\fpadd.lst FpAdd.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FpAdd 00000000
+
+Symbol: FpAdd
+   Definitions
+      At line 1 in file FpAdd.s
+   Uses
+      None
+Comment: FpAdd unused
+addNumbers 000000FC
+
+Symbol: addNumbers
+   Definitions
+      At line 125 in file FpAdd.s
+   Uses
+      At line 45 in file FpAdd.s
+Comment: addNumbers used once
+bringToSamePower 000000AC
+
+Symbol: bringToSamePower
+   Definitions
+      At line 91 in file FpAdd.s
+   Uses
+      At line 44 in file FpAdd.s
+Comment: bringToSamePower used once
+countLeadingZeros 0000011C
+
+Symbol: countLeadingZeros
+   Definitions
+      At line 134 in file FpAdd.s
+   Uses
+      At line 138 in file FpAdd.s
+Comment: countLeadingZeros used once
+endLeadingZeros 0000012C
+
+Symbol: endLeadingZeros
+   Definitions
+      At line 139 in file FpAdd.s
+   Uses
+      At line 136 in file FpAdd.s
+Comment: endLeadingZeros used once
+endnumOneBigger 000000DC
+
+Symbol: endnumOneBigger
+   Definitions
+      At line 105 in file FpAdd.s
+   Uses
+      At line 99 in file FpAdd.s
+Comment: endnumOneBigger used once
+fpadd 00000010
+
+Symbol: fpadd
+   Definitions
+      At line 26 in file FpAdd.s
+   Uses
+      At line 14 in file FpAdd.s
+Comment: fpadd used once
+getExponent 0000008C
+
+Symbol: getExponent
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 77 in file FpAdd.s
+   Uses
+      At line 33 in file FpAdd.s
+      At line 39 in file FpAdd.s
+
+getFraction 00000064
+
+Symbol: getFraction
+   Definitions
+      At line 60 in file FpAdd.s
+   Uses
+      At line 30 in file FpAdd.s
+      At line 36 in file FpAdd.s
+
+notNegative 00000084
+
+Symbol: notNegative
+   Definitions
+      At line 69 in file FpAdd.s
+   Uses
+      At line 66 in file FpAdd.s
+Comment: notNegative used once
+numOneBigger 000000CC
+
+Symbol: numOneBigger
+   Definitions
+      At line 100 in file FpAdd.s
+   Uses
+      At line 94 in file FpAdd.s
+Comment: numOneBigger used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 5 in file FpAdd.s
+   Uses
+      At line 3 in file FpAdd.s
+Comment: start used once
+stop 0000000C
+
+Symbol: stop
+   Definitions
+      At line 16 in file FpAdd.s
+   Uses
+      At line 16 in file FpAdd.s
+Comment: stop used once
+storeResult 00000150
+
+Symbol: storeResult
+   Definitions
+      At line 155 in file FpAdd.s
+   Uses
+      At line 46 in file FpAdd.s
+Comment: storeResult used once
+14 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file FpAdd.s
+   Uses
+      None
+Comment: main unused
+1 symbol
+355 symbols in table
