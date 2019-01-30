@@ -1,0 +1,230 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             StringReverse, CODE, READONLY
+    2 00000000                 IMPORT           main
+    3 00000000                 EXPORT           start
+    4 00000000         
+    5 00000000         start
+    6 00000000 E59F1044        LDR              R1, =strSrc ; address of string
+                                                            
+    7 00000004 E59F2044        LDR              R2, =strDst ; address where rev
+                                                            erse is to be store
+                                                            d
+    8 00000008         
+    9 00000008 E1A03001        MOV              R3, R1      ; backing up start 
+                                                            address of string
+   10 0000000C E3A04000        LDR              R4, =0      ; loading zero for 
+                                                            use later
+   11 00000010         
+   12 00000010         while
+   13 00000010 E5D15000        LDRB             R5, [R1]    ; while (letter != 
+                                                            0)
+   14 00000014 E3550000        CMP              R5, #0      ; {
+   15 00000018 0A000002        BEQ              endwh       ;  srcAddr = srcAdd
+                                                            r + 1
+   16 0000001C E2811001        ADD              R1, R1, #1  ;  desAddr = desAdd
+                                                            r + 1
+   17 00000020 E2822001        ADD              R2, R2, #1  ; }
+   18 00000024 EAFFFFF9        B                while       ;  
+   19 00000028         endwh
+   20 00000028         
+   21 00000028 E1A01003        MOV              R1, R3      ; scrAddr = backup 
+                                                            of start address
+   22 0000002C E5C24000        STRB             R4, [R2]    ; put a null end in
+                                                             destination
+   23 00000030         
+   24 00000030         reverse
+   25 00000030 E5D15000        LDRB             R5, [R1]    ; while (letter !=0
+                                                            )
+   26 00000034 E3550000        CMP              R5, #0      ; {
+   27 00000038 0A000002        BEQ              endReverse  ;  srcAddr = srcAdd
+                                                            r + 1
+   28 0000003C E2811001        ADD              R1, R1, #1  ;  desAddr = desAdd
+                                                            r - 1
+   29 00000040 E2422001        SUB              R2, R2, #1  ;  }
+   30 00000044 EAFFFFF9        B                reverse     ;
+   31 00000048         
+   32 00000048         endReverse
+   33 00000048         
+   34 00000048 EAFFFFFE 
+                       stop    B                stop
+   35 0000004C         
+   36 0000004C         
+   37 0000004C 00000000 
+              00000000         AREA             TestData, DATA, READWRITE
+   38 00000000         
+   39 00000000         
+   40 00000000 68 65 6C 
+              6C 6F 00 strSrc  DCB              "hello",0
+   41 00000006 00 00 00 
+              00 00 00 
+              00 00 00 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00    strDst  SPACE            128
+   42 00000086         
+   43 00000086                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\s
+tringreverse.d -o.\stringreverse.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\C
+MSIS\Include -IC:\Keil_v5\ARM\Inc\Philips --predefine="__EVAL SETA 1" --predefi
+ne="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 516" --predefine="NO
+_CLOCK_SETUP SETA 1" --predefine="NO_EMC_SETUP SETA 1" --predefine="RAM_INTVEC 
+SETA 1" --predefine="RAM_MODE SETA 1" --predefine="REMAP SETA 1" --list=.\strin
+greverse.lst StringReverse.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+StringReverse 00000000
+
+Symbol: StringReverse
+   Definitions
+      At line 1 in file StringReverse.s
+   Uses
+      None
+Comment: StringReverse unused
+endReverse 00000048
+
+Symbol: endReverse
+   Definitions
+      At line 32 in file StringReverse.s
+   Uses
+      At line 27 in file StringReverse.s
+Comment: endReverse used once
+endwh 00000028
+
+Symbol: endwh
+   Definitions
+      At line 19 in file StringReverse.s
+   Uses
+      At line 15 in file StringReverse.s
+Comment: endwh used once
+reverse 00000030
+
+Symbol: reverse
+   Definitions
+      At line 24 in file StringReverse.s
+   Uses
+      At line 30 in file StringReverse.s
+Comment: reverse used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 5 in file StringReverse.s
+   Uses
+      At line 3 in file StringReverse.s
+Comment: start used once
+stop 00000048
+
+Symbol: stop
+   Definitions
+      At line 34 in file StringReverse.s
+   Uses
+      At line 34 in file StringReverse.s
+Comment: stop used once
+while 00000010
+
+Symbol: while
+   Definitions
+      At line 12 in file StringReverse.s
+   Uses
+      At line 18 in file StringReverse.s
+Comment: while used once
+7 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+TestData 00000000
+
+Symbol: TestData
+   Definitions
+      At line 37 in file StringReverse.s
+   Uses
+      None
+Comment: TestData unused
+strDst 00000006
+
+Symbol: strDst
+   Definitions
+      At line 41 in file StringReverse.s
+   Uses
+      At line 7 in file StringReverse.s
+Comment: strDst used once
+strSrc 00000000
+
+Symbol: strSrc
+   Definitions
+      At line 40 in file StringReverse.s
+   Uses
+      At line 6 in file StringReverse.s
+Comment: strSrc used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file StringReverse.s
+   Uses
+      None
+Comment: main unused
+1 symbol
+351 symbols in table
