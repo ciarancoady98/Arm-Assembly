@@ -1,0 +1,118 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             Divide, CODE, READONLY
+    2 00000000                 IMPORT           main
+    3 00000000                 EXPORT           start
+    4 00000000         
+    5 00000000         start
+    6 00000000 E3A00000        LDR              R0, =0      ; quotient
+    7 00000004 E3A01000        LDR              R1, =0      ; remainder
+    8 00000008 E3A02007        LDR              R2, =7      ; a
+    9 0000000C E3A03002        LDR              R3, =2      ; b
+   10 00000010 E1A01002        MOV              R1, R2      ; set remainder = a
+                                                            
+   11 00000014         
+   12 00000014         checkifzero
+   13 00000014 E1500003        CMP              R0, R3      ; if (b == 0)
+   14 00000018 0A000004        BEQ              endwh
+   15 0000001C         
+   16 0000001C         while
+   17 0000001C E1510003        CMP              R1, R3      ; if (remainder >= 
+                                                            b)
+   18 00000020 BA000002        BLT              endwh
+   19 00000024 E2800001        ADD              R0, R0, #1  ; quotient = quotie
+                                                            nt + 1
+   20 00000028 E0411003        SUB              R1, R1, R3  ; remainder = remai
+                                                            nder - b
+   21 0000002C EAFFFFFA        B                while
+   22 00000030         
+   23 00000030         endwh
+   24 00000030         
+   25 00000030         
+   26 00000030         
+   27 00000030 EAFFFFFE 
+                       stop    B                stop
+   28 00000034         
+   29 00000034                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\d
+ivide.d -o.\divide.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -
+IC:\Keil_v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine="__MICROLIB
+ SETA 1" --predefine="__UVISION_VERSION SETA 524" --predefine="NO_CLOCK_SETUP S
+ETA 1" --predefine="NO_EMC_SETUP SETA 1" --predefine="RAM_INTVEC SETA 1" --pred
+efine="RAM_MODE SETA 1" --predefine="REMAP SETA 1" --list=.\divide.lst Divide.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Divide 00000000
+
+Symbol: Divide
+   Definitions
+      At line 1 in file Divide.s
+   Uses
+      None
+Comment: Divide unused
+checkifzero 00000014
+
+Symbol: checkifzero
+   Definitions
+      At line 12 in file Divide.s
+   Uses
+      None
+Comment: checkifzero unused
+endwh 00000030
+
+Symbol: endwh
+   Definitions
+      At line 23 in file Divide.s
+   Uses
+      At line 14 in file Divide.s
+      At line 18 in file Divide.s
+
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 5 in file Divide.s
+   Uses
+      At line 3 in file Divide.s
+Comment: start used once
+stop 00000030
+
+Symbol: stop
+   Definitions
+      At line 27 in file Divide.s
+   Uses
+      At line 27 in file Divide.s
+Comment: stop used once
+while 0000001C
+
+Symbol: while
+   Definitions
+      At line 16 in file Divide.s
+   Uses
+      At line 21 in file Divide.s
+Comment: while used once
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file Divide.s
+   Uses
+      None
+Comment: main unused
+1 symbol
+345 symbols in table
