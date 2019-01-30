@@ -1,0 +1,75 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             FirstProgram, CODE, READONLY
+    2 00000000                 IMPORT           main
+    3 00000000                 EXPORT           start
+    4 00000000         
+    5 00000000         start
+    6 00000000         
+    7 00000000 E1A00001        MOV              R0, R1
+    8 00000004 E0800000        ADD              R0, R0, R0
+    9 00000008 E0800000        ADD              R0, R0, R0
+   10 0000000C E0800000        ADD              R0, R0, R0
+   11 00000010         
+   12 00000010 EAFFFFFE 
+                       stop    B                stop
+   13 00000014         
+   14 00000014                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\f
+irstprogram.d -o.\firstprogram.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMS
+IS\Include -IC:\Keil_v5\ARM\Inc\Philips --predefine="__EVAL SETA 1" --predefine
+="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 516" --predefine="NO_C
+LOCK_SETUP SETA 1" --predefine="NO_EMC_SETUP SETA 1" --predefine="RAM_INTVEC SE
+TA 1" --predefine="RAM_MODE SETA 1" --predefine="REMAP SETA 1" --list=.\firstpr
+ogram.lst FirstProgram.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FirstProgram 00000000
+
+Symbol: FirstProgram
+   Definitions
+      At line 1 in file FirstProgram.s
+   Uses
+      None
+Comment: FirstProgram unused
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 5 in file FirstProgram.s
+   Uses
+      At line 3 in file FirstProgram.s
+Comment: start used once
+stop 00000010
+
+Symbol: stop
+   Definitions
+      At line 12 in file FirstProgram.s
+   Uses
+      At line 12 in file FirstProgram.s
+Comment: stop used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file FirstProgram.s
+   Uses
+      None
+Comment: main unused
+1 symbol
+342 symbols in table
